@@ -34,3 +34,6 @@
 
 # 
 *.pdb
+
+# ignore folders for comiled files
+/bin
