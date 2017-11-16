@@ -32,8 +32,10 @@
 *.app
 
 
-# 
+# ignore C# files
+*.suo
 *.pdb
 
 # ignore folders for comiled files
-/bin
+bin/
+obj/
