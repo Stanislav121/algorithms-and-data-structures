@@ -23,25 +23,8 @@ namespace DataStructures
             tree.Add(15);
             tree.Add(9);
 
-
-            foreach (var value in tree)
-            {
-                Console.WriteLine(value);
-            }
-
             //tree.BreakConsistency(12);
             //tree.DeleteNode(5);
-
-            if(!tree.GoAroundTree(tree.CheckConsistencyOfNode))
-                Console.WriteLine("Tree is incorrect"); ;
-            Console.WriteLine("Min {0}", tree.GetMin().Value);
-            Console.WriteLine("Max {0}", tree.GetMax().Value);
-
-            Console.WriteLine("Find {0}", tree.ContainsValue(11));
-
-            Console.WriteLine("Get {0}", tree.GetNode(47).Value);
-
-            
 
             Console.ReadLine();
         }

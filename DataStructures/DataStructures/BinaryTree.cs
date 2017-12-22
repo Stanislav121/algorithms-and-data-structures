@@ -9,6 +9,7 @@ namespace DataStructures
 
         private readonly Comparer<T> _comparer;
 
+
         public BinaryTree(Comparer<T> comparer)
         {
             _comparer = comparer;
@@ -175,6 +176,8 @@ namespace DataStructures
 
         private bool ContainsValue(T value, BinaryTreeNode<T> node)
         {
+            if(node == null)
+                return false;
             var result = _comparer.Compare(value, node.Value);
             if (result == 0)
                 return true;
