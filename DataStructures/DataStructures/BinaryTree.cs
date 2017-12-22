@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataStructures
 {
@@ -11,23 +7,14 @@ namespace DataStructures
     {
         private BinaryTreeNode<T> _headNode;
 
-        private Comparer<T> _comparer;
+        private readonly Comparer<T> _comparer;
 
         public BinaryTree(Comparer<T> comparer)
         {
             _comparer = comparer;
         }
 
-        //public bool CheckConsistencyYourself()
-        //{
-        //    if (_headNode == null)
-        //        return true;
-
-
-        //}
-
-        //Bad. 
-        public bool CheckNode(BinaryTreeNode<T> node)
+        public bool CheckConsistencyOfNode(BinaryTreeNode<T> node)
         {
             if (node == null)
                 return true;
@@ -83,12 +70,51 @@ namespace DataStructures
 
         //public bool DeleteNode(T value)
         //{
-        //    var contain = FindValue(value);
+        //    var contain = ContainsValue(value);
         //    if (!contain)
         //        return false;
 
-        //    if
+        //    var nodeForDelete = GetNode(value);
+        //    // deleted node is head of tree
+        //    if (nodeForDelete.HeadNode == null)
+        //    {
+        //        _headNode = null;
+        //        return true;
+        //    }
+            
+        //    if (nodeForDelete.LeftNode == null)
+        //    {
+        //        var deletedNodeHead = nodeForDelete.HeadNode;
+        //        if (_comparer.Compare(deletedNodeHead.LeftNode.Value, value) == 0)
+        //        {
+        //            deletedNodeHead.AddLeftNode(nodeForDelete.RightNode);
+        //            return true;
+        //        }
+        //        if (_comparer.Compare(deletedNodeHead.RightNode.Value, value) == 0)
+        //        {
+        //            deletedNodeHead.AddRightNode(nodeForDelete.RightNode);
+        //            return true;
+        //        }
+        //        return false;
+        //    }
+        //    if (nodeForDelete.RightNode == null)
+        //    {
+        //        var deletedNodeHead = nodeForDelete.HeadNode;
+        //        if (_comparer.Compare(deletedNodeHead.LeftNode.Value, value) == 0)
+        //        {
+        //            deletedNodeHead.AddLeftNode(nodeForDelete.LeftNode);
+        //            return true;
+        //        }
+        //        if (_comparer.Compare(deletedNodeHead.RightNode.Value, value) == 0)
+        //        {
+        //            deletedNodeHead.AddRightNode(nodeForDelete.LeftNode);
+        //            return true;
+        //        }
+        //        return false;
+        //    }
 
+        //    // If both are zero?
+        //    return false;
         //}
 
 
@@ -140,37 +166,32 @@ namespace DataStructures
             return GetMax(node.RightNode);
         }
 
-        public bool FindValue(T value)
+        public bool ContainsValue(T value)
         {
             if (_headNode == null)
                 return false;
-            return FindValue(value, _headNode);
+            return ContainsValue(value, _headNode);
         }
 
-        private bool FindValue(T value, BinaryTreeNode<T> node)
+        private bool ContainsValue(T value, BinaryTreeNode<T> node)
         {
             var result = _comparer.Compare(value, node.Value);
             if (result == 0)
                 return true;
             if (result < 0)
-                return FindValue(value, node.LeftNode);
+                return ContainsValue(value, node.LeftNode);
             else
             {
-                return FindValue(value, node.RightNode);
+                return ContainsValue(value, node.RightNode);
             }
         }
-
-        //public IEnumerator<T> GetEnumerator()
-        //{
-
-        //}
 
         public R GoAroundTree<R>(Func<BinaryTreeNode<T>, R> func)
         {
             return VisitNode(_headNode, func);
         }
 
-        private R VisitNode<R>(BinaryTreeNode<T> node, Func<BinaryTreeNode<T>, R> func)
+        private TR VisitNode<TR>(BinaryTreeNode<T> node, Func<BinaryTreeNode<T>, TR> func)
         {
             if (node == null)
                 return func(node);
@@ -181,9 +202,21 @@ namespace DataStructures
             return func(node);
         }
 
-        public override string ToString()
+        public IEnumerator<T> GetEnumerator()
         {
-            return base.ToString();
+            var list = new List<T>();
+            ToList(_headNode, list);
+            return list.GetEnumerator();
+        }
+
+        private void ToList(BinaryTreeNode<T> node, IList<T> list)
+        {
+            if (node == null)
+                return;
+
+            list.Add(node.Value);
+            ToList(node.LeftNode, list);
+            ToList(node.RightNode, list);
         }
     }
 }

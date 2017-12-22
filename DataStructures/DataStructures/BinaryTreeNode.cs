@@ -26,9 +26,21 @@ namespace DataStructures
             LeftNode.HeadNode = this;
         }
 
+        public void AddLeftNode(BinaryTreeNode<T> node)
+        {
+            LeftNode = node;
+            LeftNode.HeadNode = this;
+        }
+
         public void AddRightNode(T value)
         {
             RightNode = new BinaryTreeNode<T>(value);
+            RightNode.HeadNode = this;
+        }
+
+        public void AddRightNode(BinaryTreeNode<T> node)
+        {
+            RightNode = node;
             RightNode.HeadNode = this;
         }
 
