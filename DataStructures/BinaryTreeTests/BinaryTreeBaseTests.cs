@@ -49,11 +49,39 @@ namespace BinaryTreeTests
         }
 
         [Test]
-        public void TestConsistencyOfTree()
+        public void TestConsistencyOfTreeValidTree()
         {
-            Assert.IsTrue(_tree.GoAroundTree(_tree.CheckConsistencyOfNode));
-            Assert.IsTrue(_treeWithOneNode.GoAroundTree(_treeWithOneNode.CheckConsistencyOfNode));
-            Assert.IsTrue(_emptyTree.GoAroundTree(_emptyTree.CheckConsistencyOfNode));
+            Assert.IsTrue(_tree.CheckConsistency());
+            Assert.IsTrue(_tree.CheckConsistency());
+            Assert.IsTrue(_tree.CheckConsistency());
+        }
+
+        [Test]
+        public void TestConsistencyOfTreeInvalidTreeLeft()
+        {
+            _tree.BreakConsistency(63, 12);
+            Assert.IsFalse(_tree.CheckConsistency());
+        }
+
+        [Test]
+        public void TestConsistencyOfTreeInvalidTreeMiddle()
+        {
+            _tree.BreakConsistency(47, 12);
+            Assert.IsFalse(_tree.CheckConsistency());
+        }
+
+        [Test]
+        public void TestBreakConsistency()
+        {
+            _tree.BreakConsistency(47, 12);
+            var resultList = new List<int> { 8, 3, 5, 17, 11, 9, 15, 12, 18, 51, 63 };
+            var listFromTree = new List<int>();
+            foreach (var value in _tree)
+            {
+                listFromTree.Add(value);
+            }
+
+            Assert.IsTrue(resultList.SequenceEqual(listFromTree));
         }
 
         [Test]
@@ -89,6 +117,18 @@ namespace BinaryTreeTests
             Assert.IsFalse(_tree.ContainsValue(12));
             Assert.IsFalse(_treeWithOneNode.ContainsValue(12));
             Assert.IsFalse(_emptyTree.ContainsValue(12));
+        }
+
+        [Test]
+        public void TestGoAroundTree()
+        {
+            _tree.GoAroundTree(SomeAction);
+            Assert.IsTrue(false);
+        }
+
+        private void SomeAction<T>(BinaryTreeNode<T> node)
+        {
+            
         }
     }
 }

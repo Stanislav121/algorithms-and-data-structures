@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace DataStructures
 {
-    public class BinaryTree<T>
+    public class BinaryTree<T> : IEnumerable<T>
     {
         private BinaryTreeNode<T> _headNode;
 
@@ -13,6 +14,30 @@ namespace DataStructures
         public BinaryTree(Comparer<T> comparer)
         {
             _comparer = comparer;
+        }
+
+        #region Consistency
+
+        public bool CheckConsistency()
+        {
+            return CheckConsistency(_headNode);
+        }
+
+        private bool CheckConsistency(BinaryTreeNode<T> node)
+        {
+            if (node == null)
+                return true;
+
+            var isNodeValid = CheckConsistencyOfNode(node);
+            if (!isNodeValid)
+                return false;
+            isNodeValid = CheckConsistency(node.LeftNode);
+            if (!isNodeValid)
+                return false;
+            isNodeValid = CheckConsistency(node.RightNode);
+            if (!isNodeValid)
+                return false;
+            return true;
         }
 
         public bool CheckConsistencyOfNode(BinaryTreeNode<T> node)
@@ -27,10 +52,22 @@ namespace DataStructures
             return true;
         }
 
-        public void BreakConsistency(T value)
+        public void BreakConsistency(T valueOld, T valueNew)
         {
-            _headNode.LeftNode.AddLeftNode(value);
+            var oldNode = GetNode(valueOld);
+            if (oldNode.HeadNode.LeftNode != null && _comparer.Compare(oldNode.HeadNode.LeftNode.Value, valueOld) == 0)
+            {
+                oldNode.HeadNode.LeftNode.Value = valueNew;
+            }
+            else
+            {
+                oldNode.HeadNode.RightNode.Value = valueNew;
+            }
         }
+        
+        #endregion
+
+        #region Add
 
         public bool Add(T value)
         {
@@ -68,6 +105,8 @@ namespace DataStructures
                 return Add(value, node.LeftNode, node);
             }
         }
+
+        #endregion
 
         //public bool DeleteNode(T value)
         //{
@@ -118,6 +157,7 @@ namespace DataStructures
         //    return false;
         //}
 
+        #region GetNode
 
         public BinaryTreeNode<T> GetNode(T value)
         {
@@ -138,6 +178,10 @@ namespace DataStructures
                 return GetNode(node, headNode.RightNode);
             }
         }
+ 
+        #endregion
+
+        #region GetMin
 
         public BinaryTreeNode<T> GetMin()
         {
@@ -153,6 +197,10 @@ namespace DataStructures
             return GetMin(node.LeftNode);
         }
 
+        #endregion
+
+        #region GetMax
+
         public BinaryTreeNode<T> GetMax()
         {
             if (_headNode == null)
@@ -167,6 +215,10 @@ namespace DataStructures
             return GetMax(node.RightNode);
         }
 
+        #endregion
+
+        #region ContainsValue
+
         public bool ContainsValue(T value)
         {
             if (_headNode == null)
@@ -176,7 +228,7 @@ namespace DataStructures
 
         private bool ContainsValue(T value, BinaryTreeNode<T> node)
         {
-            if(node == null)
+            if (node == null)
                 return false;
             var result = _comparer.Compare(value, node.Value);
             if (result == 0)
@@ -188,21 +240,23 @@ namespace DataStructures
                 return ContainsValue(value, node.RightNode);
             }
         }
+        
+        #endregion
 
-        public R GoAroundTree<R>(Func<BinaryTreeNode<T>, R> func)
+        public void GoAroundTree(Action<BinaryTreeNode<T>> func)
         {
-            return VisitNode(_headNode, func);
+            VisitNode(_headNode, func);
         }
 
-        private TR VisitNode<TR>(BinaryTreeNode<T> node, Func<BinaryTreeNode<T>, TR> func)
+        private void VisitNode(BinaryTreeNode<T> node, Action<BinaryTreeNode<T>> func)
         {
             if (node == null)
-                return func(node);
+                return;
 
+            func(node);
             Console.WriteLine(node.Value);
             VisitNode(node.LeftNode, func);
             VisitNode(node.RightNode, func);
-            return func(node);
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -220,6 +274,11 @@ namespace DataStructures
             list.Add(node.Value);
             ToList(node.LeftNode, list);
             ToList(node.RightNode, list);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
