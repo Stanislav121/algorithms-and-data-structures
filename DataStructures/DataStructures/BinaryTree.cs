@@ -90,7 +90,7 @@ namespace DataStructures
             {
                 if (node.RightNode == null)
                 {
-                    node.AddRightNode(value);
+                    node.SetRightNode(value);
                     return true;
                 }
                 return Add(value, node.RightNode);
@@ -99,7 +99,7 @@ namespace DataStructures
             {
                 if (node.LeftNode == null)
                 {
-                    node.AddLeftNode(value);
+                    node.SetLeftNode(value);
                     return true;
                 }
                 return Add(value, node.LeftNode);
@@ -140,7 +140,7 @@ namespace DataStructures
                 _headNode = rightBranch;
                 _headNode.DiscardHeadtNode();
                 var minLeaf = GetMin();
-                minLeaf.AddLeftNode(leftBranch);
+                minLeaf.SetLeftNode(leftBranch);
                 return true;
             }
             else
@@ -167,7 +167,7 @@ namespace DataStructures
                 UpdateNode(nodeForDelete, rightBranch);
                 nodeForDelete.AddHeadtNode(newHeadNode);
                 var minLeaf = GetMin(rightBranch);
-                minLeaf.AddLeftNode(leftBranch);
+                minLeaf.SetLeftNode(leftBranch);
                 return true;
             }
         }
@@ -182,23 +182,23 @@ namespace DataStructures
             var headNode = oldNode.HeadNode;
             if (headNode.LeftNode == null)
             {
-                headNode.AddRightNode(newNode);
+                headNode.SetRightNode(newNode);
                 return;
             }
             if (headNode.RightNode == null)
             {
-                headNode.AddLeftNode(newNode);
+                headNode.SetLeftNode(newNode);
                 return;
             }
 
             if (_comparer.Compare(headNode.LeftNode.Value, oldNode.Value) == 0)
             {
-                headNode.AddLeftNode(newNode);
+                headNode.SetLeftNode(newNode);
                 return;
             }
             if (_comparer.Compare(headNode.RightNode.Value, oldNode.Value) == 0)
             {
-                headNode.AddRightNode(newNode);
+                headNode.SetRightNode(newNode);
                 return;
             }
         }
