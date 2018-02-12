@@ -48,5 +48,10 @@ namespace DataStructures
         {
             HeadNode = headNode;
         }
+
+        public void DiscardHeadtNode()
+        {
+            HeadNode = null;
+        }
     }
 }

@@ -23,9 +23,6 @@ namespace DataStructures
             tree.Add(15);
             tree.Add(9);
 
-            
-            //tree.DeleteNode(5);
-
             Console.ReadLine();
         }
     }

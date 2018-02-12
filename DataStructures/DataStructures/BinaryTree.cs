@@ -76,11 +76,11 @@ namespace DataStructures
                 _headNode = new BinaryTreeNode<T>(value);
             }
 
-            var result = Add(value, _headNode, null);
+            var result = Add(value, _headNode);
             return result;
         }
 
-        private bool Add(T value, BinaryTreeNode<T> node, BinaryTreeNode<T> headNode)
+        private bool Add(T value, BinaryTreeNode<T> node)
         {
             var result = _comparer.Compare(value, node.Value);
             if (result == 0)
@@ -93,7 +93,7 @@ namespace DataStructures
                     node.AddRightNode(value);
                     return true;
                 }
-                return Add(value, node.RightNode, node);
+                return Add(value, node.RightNode);
             }
             else
             {
@@ -102,59 +102,110 @@ namespace DataStructures
                     node.AddLeftNode(value);
                     return true;
                 }
-                return Add(value, node.LeftNode, node);
+                return Add(value, node.LeftNode);
             }
         }
 
         #endregion
 
-        //public bool DeleteNode(T value)
+        public bool DeleteNode(T value)
+        {
+            var contain = ContainsValue(value);
+            if (!contain)
+                return false;
+
+            var nodeForDelete = GetNode(value);
+            var leftBranch = nodeForDelete.LeftNode;
+            var rightBranch = nodeForDelete.RightNode;
+            if (nodeForDelete.HeadNode == null)
+            {
+                if (rightBranch == null && leftBranch == null)
+                {
+                    _headNode = null;
+                    return true;
+                }
+                if (rightBranch == null)
+                {
+                    _headNode = leftBranch;
+                    _headNode.DiscardHeadtNode();
+                    return true;
+                }
+                if (leftBranch == null)
+                {
+                    _headNode = rightBranch;
+                    _headNode.DiscardHeadtNode();
+                    return true;
+                }
+
+                _headNode = rightBranch;
+                _headNode.DiscardHeadtNode();
+                var minLeaf = GetMin();
+                minLeaf.AddLeftNode(leftBranch);
+                return true;
+            }
+            else
+            {
+                var newHeadNode = nodeForDelete.HeadNode;
+                if (rightBranch == null && leftBranch == null)
+                {
+                    nodeForDelete = null;
+                    return true;
+                }
+                if (rightBranch == null)
+                {
+                    UpdateNode(nodeForDelete, leftBranch);
+                    nodeForDelete.AddHeadtNode(newHeadNode);
+                    return true;
+                }
+                if (leftBranch == null)
+                {
+                    UpdateNode(nodeForDelete, rightBranch);
+                    nodeForDelete.AddHeadtNode(newHeadNode);
+                    return true;
+                }
+
+                UpdateNode(nodeForDelete, rightBranch);
+                nodeForDelete.AddHeadtNode(newHeadNode);
+                var minLeaf = GetMin(rightBranch);
+                minLeaf.AddLeftNode(leftBranch);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Note! This method must be private, otherwise someone use it and break consistensy of this tree
+        /// </summary>
+        /// <param name="oldNode"></param>
+        /// <param name="newNode"></param>
+        public void UpdateNode(BinaryTreeNode<T> oldNode, BinaryTreeNode<T> newNode)
+        {
+            var headNode = oldNode.HeadNode;
+            if (headNode.LeftNode == null)
+            {
+                headNode.AddRightNode(newNode);
+                return;
+            }
+            if (headNode.RightNode == null)
+            {
+                headNode.AddLeftNode(newNode);
+                return;
+            }
+
+            if (_comparer.Compare(headNode.LeftNode.Value, oldNode.Value) == 0)
+            {
+                headNode.AddLeftNode(newNode);
+                return;
+            }
+            if (_comparer.Compare(headNode.RightNode.Value, oldNode.Value) == 0)
+            {
+                headNode.AddRightNode(newNode);
+                return;
+            }
+        }
+
+        //private bool Displace(ref BinaryTreeNode<T> displacedNode, BinaryTreeNode<T> rightBranch, BinaryTreeNode<T> leftBranch)
         //{
-        //    var contain = ContainsValue(value);
-        //    if (!contain)
-        //        return false;
-
-        //    var nodeForDelete = GetNode(value);
-        //    // deleted node is head of tree
-        //    if (nodeForDelete.HeadNode == null)
-        //    {
-        //        _headNode = null;
-        //        return true;
-        //    }
             
-        //    if (nodeForDelete.LeftNode == null)
-        //    {
-        //        var deletedNodeHead = nodeForDelete.HeadNode;
-        //        if (_comparer.Compare(deletedNodeHead.LeftNode.Value, value) == 0)
-        //        {
-        //            deletedNodeHead.AddLeftNode(nodeForDelete.RightNode);
-        //            return true;
-        //        }
-        //        if (_comparer.Compare(deletedNodeHead.RightNode.Value, value) == 0)
-        //        {
-        //            deletedNodeHead.AddRightNode(nodeForDelete.RightNode);
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //    if (nodeForDelete.RightNode == null)
-        //    {
-        //        var deletedNodeHead = nodeForDelete.HeadNode;
-        //        if (_comparer.Compare(deletedNodeHead.LeftNode.Value, value) == 0)
-        //        {
-        //            deletedNodeHead.AddLeftNode(nodeForDelete.LeftNode);
-        //            return true;
-        //        }
-        //        if (_comparer.Compare(deletedNodeHead.RightNode.Value, value) == 0)
-        //        {
-        //            deletedNodeHead.AddRightNode(nodeForDelete.LeftNode);
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-
-        //    // If both are zero?
-        //    return false;
         //}
 
         #region GetNode
