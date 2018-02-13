@@ -27,6 +27,11 @@ namespace DataStructures
 
         public void SetLeftNode(BinaryTreeNode<T> node)
         {
+            if (node == null)
+            {
+                LeftNode = null;
+                return;
+            }
             LeftNode = node;
             LeftNode.HeadNode = this;
         }
@@ -38,6 +43,11 @@ namespace DataStructures
 
         public void SetRightNode(BinaryTreeNode<T> node)
         {
+            if (node == null)
+            {
+                RightNode = null;
+                return;
+            }
             RightNode = node;
             RightNode.HeadNode = this;
         }

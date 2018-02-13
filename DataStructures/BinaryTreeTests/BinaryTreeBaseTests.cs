@@ -16,21 +16,9 @@ namespace BinaryTreeTests
         [SetUp]
         public void FillTree()
         {
-            _tree = new BinaryTree<int>(Comparer<int>.Default);
-            _tree.Add(8);
-            _tree.Add(17);
-            _tree.Add(3);
-            _tree.Add(5);
-            _tree.Add(11);
-            _tree.Add(47);
-            _tree.Add(51);
-            _tree.Add(63);
-            _tree.Add(18);
-            _tree.Add(15);
-            _tree.Add(9);
+            _tree = new BinaryTree<int>(Comparer<int>.Default) {8, 17, 3, 5, 11, 47, 51, 63, 18, 15, 9, 16, 2, 1};
 
-            _treeWithOneNode = new BinaryTree<int>(Comparer<int>.Default);
-            _treeWithOneNode.Add(42);
+            _treeWithOneNode = new BinaryTree<int>(Comparer<int>.Default) {42};
 
             _emptyTree = new BinaryTree<int>(Comparer<int>.Default);
         }
@@ -38,7 +26,7 @@ namespace BinaryTreeTests
         [Test]
         public void TestAdd()
         {
-            var expectedList = new List<int> { 8, 3, 5, 17, 11, 9, 15, 47, 18, 51, 63 };
+            var expectedList = new List<int> { 8, 3, 2, 1, 5, 17, 11, 9, 15, 16, 47, 18, 51, 63 };
             var listFromTree = new List<int>();
             foreach (var value in _tree)
             {
@@ -74,7 +62,7 @@ namespace BinaryTreeTests
         public void TestBreakConsistency()
         {
             _tree.BreakConsistency(47, 12);
-            var expectedList = new List<int> { 8, 3, 5, 17, 11, 9, 15, 12, 18, 51, 63 };
+            var expectedList = new List<int> { 8, 3, 2, 1, 5, 17, 11, 9, 15, 16, 12, 18, 51, 63 };
             var listFromTree = new List<int>();
             foreach (var value in _tree)
             {
@@ -87,7 +75,7 @@ namespace BinaryTreeTests
         [Test]
         public void TestGetMin()
         {
-            Assert.AreEqual(_tree.GetMin().Value, 3);
+            Assert.AreEqual(_tree.GetMin().Value, 1);
             Assert.AreEqual(_treeWithOneNode.GetMin().Value, 42);
             Assert.AreEqual(_emptyTree.GetMin(), null);
         }
@@ -119,43 +107,70 @@ namespace BinaryTreeTests
             Assert.IsFalse(_emptyTree.ContainsValue(12));
         }
 
-        [Test]
+        [Test, Ignore("Need implement")]
         public void TestUpdateNode()
         {
             Assert.IsTrue(false);
         }
 
-        [Test]
-        public void TestDeleteHead()
+        #region DeleteNode
+        
+        [TestCase(3, ExpectedResult = new[] { 8, 5, 2, 1, 17, 11, 9, 15, 16, 47, 18, 51, 63 })]
+        [TestCase(17, ExpectedResult = new[] { 8, 3, 2, 1, 5, 47, 18, 11, 9, 15, 16, 51, 63 })]
+        [TestCase(16, ExpectedResult = new[] { 8, 3, 2, 1, 5, 17, 11, 9, 15, 47, 18, 51, 63 })] // delete node without branchs
+        [TestCase(5, ExpectedResult = new[] { 8, 3, 2, 1, 17, 11, 9, 15, 16, 47, 18, 51, 63 })] // delete node without branchs
+        [TestCase(51, ExpectedResult = new[] { 8, 3, 2, 1, 5, 17, 11, 9, 15, 16, 47, 18, 63 })] // delete node with only right branch
+        [TestCase(2, ExpectedResult = new[] { 8, 3, 1, 5, 17, 11, 9, 15, 16, 47, 18, 51, 63 })] // delete node with only left branch
+        [TestCase(8, ExpectedResult = new[] { 17, 11, 9, 3, 2, 1, 5, 15, 16, 47, 18, 51, 63 })] // delete head
+        [TestCase(0, ExpectedResult = new[] { 8, 3, 2, 1, 5, 17, 11, 9, 15, 16, 47, 18, 51, 63 })] // delete not existed node
+        public int[] TestDelete(int deletedValue)
         {
-            _tree.DeleteNode(8);
-            var expectedList = new List<int> { 17, 11, 9, 3, 5, 15, 47, 18, 51, 63 };
+            _tree.DeleteNode(deletedValue);
+            
             var listFromTree = new List<int>();
             foreach (var value in _tree)
             {
                 listFromTree.Add(value);
             }
 
-            Assert.IsTrue(expectedList.SequenceEqual(listFromTree));
             Assert.IsTrue(_tree.CheckConsistency());
+            return listFromTree.ToArray();
         }
 
         [Test]
-        public void TestDelete()
+        public void TestDeleteTreeWithOneNode()
         {
-            _tree.DeleteNode(17);
-            var expectedList = new List<int> { 8, 3, 5, 47, 18, 11, 9, 15, 51, 63 };
+            _treeWithOneNode.DeleteNode(42);
+            var expectedList = new List<int> ();
             var listFromTree = new List<int>();
-            foreach (var value in _tree)
+            foreach (var value in _treeWithOneNode)
             {
                 listFromTree.Add(value);
             }
 
+            Assert.IsTrue(_treeWithOneNode.CheckConsistency());
             Assert.IsTrue(expectedList.SequenceEqual(listFromTree));
-            Assert.IsTrue(_tree.CheckConsistency());
         }
 
         [Test]
+        public void TestDeleteEmptyTree()
+        {
+            var isDeleted = _emptyTree.DeleteNode(42);
+            var expectedList = new List<int>();
+            var listFromTree = new List<int>();
+            foreach (var value in _emptyTree)
+            {
+                listFromTree.Add(value);
+            }
+
+            Assert.IsTrue(_emptyTree.CheckConsistency());
+            Assert.IsTrue(expectedList.SequenceEqual(listFromTree));
+            Assert.IsFalse(isDeleted);
+        }
+
+        #endregion
+
+        [Test, Ignore("Need implement")]
         public void TestGoAroundTree()
         {
             _tree.GoAroundTree(SomeAction);

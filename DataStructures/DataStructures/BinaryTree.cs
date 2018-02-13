@@ -148,7 +148,7 @@ namespace DataStructures
                 var newHeadNode = nodeForDelete.HeadNode;
                 if (rightBranch == null && leftBranch == null)
                 {
-                    nodeForDelete = null;
+                    UpdateNode(nodeForDelete, null);
                     return true;
                 }
                 if (rightBranch == null)
