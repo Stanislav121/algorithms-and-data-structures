@@ -156,23 +156,21 @@ namespace DataStructures
             {
                 if (rightBranch == null && leftBranch == null)
                 {
-                    DiscardNodeFromChain(nodeForDelete, null);
+                    DiscardNodeFromChain(nodeForDelete, null, null);
                     return true;
                 }
                 if (rightBranch == null)
                 {
-                    DiscardNodeFromChain(nodeForDelete, leftBranch);
+                    DiscardNodeFromChain(nodeForDelete, leftBranch, null);
                     return true;
                 }
                 if (leftBranch == null)
                 {
-                    DiscardNodeFromChain(nodeForDelete, rightBranch);
+                    DiscardNodeFromChain(nodeForDelete, rightBranch, null);
                     return true;
                 }
 
-                DiscardNodeFromChain(nodeForDelete, rightBranch);
-                var minLeaf = GetMin(rightBranch);
-                minLeaf.SetLeftNode(leftBranch);
+                DiscardNodeFromChain(nodeForDelete, rightBranch, leftBranch);
                 return true;
             }
         }
@@ -182,7 +180,7 @@ namespace DataStructures
         /// </summary>
         /// <param name="oldNode"></param>
         /// <param name="newNode"></param>
-        private void DiscardNodeFromChain(BinaryTreeNode<T> oldNode, BinaryTreeNode<T> newNode)
+        private void DiscardNodeFromChain(BinaryTreeNode<T> oldNode, BinaryTreeNode<T> newNode, BinaryTreeNode<T> tail)
         {
             // If head node of discarded branch have only discarded branch as child
             //  we throw away discaded node, and link head node with residue of branch
@@ -203,13 +201,17 @@ namespace DataStructures
             if (_comparer.Compare(headNode.LeftNode.Value, oldNode.Value) == 0)
             {
                 headNode.SetLeftNode(newNode);
-                return;
             }
             if (_comparer.Compare(headNode.RightNode.Value, oldNode.Value) == 0)
             {
                 headNode.SetRightNode(newNode);
-                return;
             }
+
+            if(tail == null)
+                return;
+
+            var minLeaf = GetMin(newNode);
+            minLeaf.SetLeftNode(tail);
         }
 
         #endregion
