@@ -115,6 +115,8 @@ namespace DataStructures
 
         #endregion
 
+        #region Delete
+
         public bool DeleteNode(T value)
         {
             var contain = ContainsValue(value);
@@ -152,24 +154,23 @@ namespace DataStructures
             }
             else
             {
-                var newHeadNode = nodeForDelete.HeadNode;
                 if (rightBranch == null && leftBranch == null)
                 {
-                    UpdateNode(nodeForDelete, null);
+                    DiscardNodeFromChain(nodeForDelete, null);
                     return true;
                 }
                 if (rightBranch == null)
                 {
-                    UpdateNode(nodeForDelete, leftBranch);
+                    DiscardNodeFromChain(nodeForDelete, leftBranch);
                     return true;
                 }
                 if (leftBranch == null)
                 {
-                    UpdateNode(nodeForDelete, rightBranch);
+                    DiscardNodeFromChain(nodeForDelete, rightBranch);
                     return true;
                 }
 
-                UpdateNode(nodeForDelete, rightBranch);
+                DiscardNodeFromChain(nodeForDelete, rightBranch);
                 var minLeaf = GetMin(rightBranch);
                 minLeaf.SetLeftNode(leftBranch);
                 return true;
@@ -181,8 +182,10 @@ namespace DataStructures
         /// </summary>
         /// <param name="oldNode"></param>
         /// <param name="newNode"></param>
-        public void UpdateNode(BinaryTreeNode<T> oldNode, BinaryTreeNode<T> newNode)
+        private void DiscardNodeFromChain(BinaryTreeNode<T> oldNode, BinaryTreeNode<T> newNode)
         {
+            // If head node of discarded branch have only discarded branch as child
+            //  we throw away discaded node, and link head node with residue of branch
             var headNode = oldNode.HeadNode;
             if (headNode.LeftNode == null)
             {
@@ -195,6 +198,8 @@ namespace DataStructures
                 return;
             }
 
+            // If head node of discarded branch have two childes, we need
+            //  find, in which branch place discaded node. And after that do above operation.
             if (_comparer.Compare(headNode.LeftNode.Value, oldNode.Value) == 0)
             {
                 headNode.SetLeftNode(newNode);
@@ -207,10 +212,7 @@ namespace DataStructures
             }
         }
 
-        //private bool Displace(ref BinaryTreeNode<T> displacedNode, BinaryTreeNode<T> rightBranch, BinaryTreeNode<T> leftBranch)
-        //{
-            
-        //}
+        #endregion
 
         #region GetNode
 

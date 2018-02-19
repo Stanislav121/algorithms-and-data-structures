@@ -52,7 +52,7 @@ namespace DataStructures
             RightNode.HeadNode = this;
         }
 
-        public void AddHeadtNode(BinaryTreeNode<T> headNode)
+        public void SetHeadtNode(BinaryTreeNode<T> headNode)
         {
             HeadNode = headNode;
         }
