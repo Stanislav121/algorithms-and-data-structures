@@ -28,19 +28,26 @@ namespace DataStructures
             if (node == null)
                 return true;
 
-            var isNodeValid = CheckConsistencyOfNode(node);
+            var isNodeValid = CheckConsistencyOfChilds(node);
             if (!isNodeValid)
                 return false;
-            isNodeValid = CheckConsistency(node.LeftNode);
+            isNodeValid = CheckConsistency(node.LeftNode) && CheckConsistencyOfHead(node.LeftNode, node);
             if (!isNodeValid)
                 return false;
-            isNodeValid = CheckConsistency(node.RightNode);
+            isNodeValid = CheckConsistency(node.RightNode) && CheckConsistencyOfHead(node.RightNode, node);
             if (!isNodeValid)
                 return false;
             return true;
         }
 
-        public bool CheckConsistencyOfNode(BinaryTreeNode<T> node)
+        public bool CheckConsistencyOfHead(BinaryTreeNode<T> node, BinaryTreeNode<T> headNode)
+        {
+            if (node == null)
+                return true;
+            return node.HeadNode == headNode;
+        }
+
+        public bool CheckConsistencyOfChilds(BinaryTreeNode<T> node)
         {
             if (node == null)
                 return true;
@@ -154,18 +161,15 @@ namespace DataStructures
                 if (rightBranch == null)
                 {
                     UpdateNode(nodeForDelete, leftBranch);
-                    nodeForDelete.AddHeadtNode(newHeadNode);
                     return true;
                 }
                 if (leftBranch == null)
                 {
                     UpdateNode(nodeForDelete, rightBranch);
-                    nodeForDelete.AddHeadtNode(newHeadNode);
                     return true;
                 }
 
                 UpdateNode(nodeForDelete, rightBranch);
-                nodeForDelete.AddHeadtNode(newHeadNode);
                 var minLeaf = GetMin(rightBranch);
                 minLeaf.SetLeftNode(leftBranch);
                 return true;
