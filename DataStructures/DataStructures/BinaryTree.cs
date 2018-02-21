@@ -197,7 +197,7 @@ namespace DataStructures
             }
 
             // If head node of discarded branch have two childes, we need
-            //  find, in which branch place discaded node. And after that do above operation.
+            //  find, in which branch place discaded node. And after that append branches.
             if (_comparer.Compare(headNode.LeftNode.Value, oldNode.Value) == 0)
             {
                 headNode.SetLeftNode(newNode);
