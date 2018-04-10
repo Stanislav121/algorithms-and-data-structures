@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BinaryTreeTests")]
 
 namespace DataStructures
 {
@@ -18,6 +21,13 @@ namespace DataStructures
 
         #region Consistency
 
+        /// <summary>
+        /// Is tree in consistency state? 
+        /// Childe node must point to their head node,
+        /// Value of node must be larger than left childe,
+        /// Value of node must be smaller than right childe
+        /// </summary>
+        /// <returns>true, if all conditions are met</returns>
         public bool CheckConsistency()
         {
             return CheckConsistency(_headNode);
@@ -58,8 +68,14 @@ namespace DataStructures
                 return false;
             return true;
         }
-
-        public void BreakConsistency(T valueOld, T valueNew)
+        
+        /// <summary>
+        /// This method is intended only for using by Unit tests
+        /// Replace old value by new value. It is make tree inconsistency and used for tests method CheckConsistency
+        /// </summary>
+        /// <param name="valueOld">Value, that should be replaced by new value</param>
+        /// <param name="valueNew">Value, that will replace old value</param>
+        internal void BreakConsistency(T valueOld, T valueNew)
         {
             var oldNode = GetNode(valueOld);
             if (oldNode.HeadNode.LeftNode != null && _comparer.Compare(oldNode.HeadNode.LeftNode.Value, valueOld) == 0)
@@ -178,8 +194,9 @@ namespace DataStructures
         /// <summary>
         /// Note! This method must be private, otherwise someone use it and break consistensy of this tree
         /// </summary>
-        /// <param name="oldNode"></param>
-        /// <param name="newNode"></param>
+        /// <param name="oldNode">Node for delete</param>
+        /// <param name="newNode">Node, that will replace deleted node and his childs</param>
+        /// <param name="tail">Branhc with other nodes of OldNode. Will be added to the NewNode</param>
         private void DiscardNodeFromChain(BinaryTreeNode<T> oldNode, BinaryTreeNode<T> newNode, BinaryTreeNode<T> tail)
         {
             // If head node of discarded branch have only discarded branch as child
@@ -302,6 +319,10 @@ namespace DataStructures
         
         #endregion
 
+        /// <summary>
+        /// Execute received on each node
+        /// </summary>
+        /// <param name="func"></param>
         public void GoAroundTree(Action<BinaryTreeNode<T>> func)
         {
             VisitNode(_headNode, func);
