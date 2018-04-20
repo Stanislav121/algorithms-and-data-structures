@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataStructures
 {
@@ -23,6 +21,7 @@ namespace DataStructures
             tree.Add(15);
             tree.Add(9);
 
+            Console.WriteLine(tree.Count());
             Console.ReadLine();
         }
     }

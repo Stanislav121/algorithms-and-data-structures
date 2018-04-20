@@ -39,3 +39,5 @@
 # ignore folders for comiled files
 bin/
 obj/
+/DataStructures/packages/NUnit.3.9.0
+/DataStructures/.vs/DataStructures/v15/Server/sqlite3
