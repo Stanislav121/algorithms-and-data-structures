@@ -116,6 +116,7 @@ namespace BinaryTreeTests
         #region DeleteNode
 
         [TestCase(47, ExpectedResult = new[] { 8, 3, 2, 1, 5, 17, 11, 9, 15, 16, 51, 18, 63 })]
+        [TestCase(63, ExpectedResult = new[] { 8, 3, 2, 1, 5, 17, 11, 9, 15, 16, 47, 18, 51 })]
         [TestCase(3, ExpectedResult = new[] { 8, 5, 2, 1, 17, 11, 9, 15, 16, 47, 18, 51, 63 })]
         [TestCase(17, ExpectedResult = new[] { 8, 3, 2, 1, 5, 47, 18, 11, 9, 15, 16, 51, 63 })]
         [TestCase(16, ExpectedResult = new[] { 8, 3, 2, 1, 5, 17, 11, 9, 15, 47, 18, 51, 63 })] // delete node without branchs
