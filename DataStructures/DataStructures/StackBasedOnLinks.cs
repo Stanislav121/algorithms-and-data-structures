@@ -1,6 +1,6 @@
 ﻿namespace DataStructures
 {
-    public class MyStack<T>
+    public class StackBasedOnLinks<T> : IStack<T>
     {
         private TwoWayNode<T> _currentValue;
 

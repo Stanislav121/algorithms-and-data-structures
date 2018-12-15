@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="BinaryTree.cs" />
     <Compile Include="BinaryTreeNode.cs" />
-    <Compile Include="MyStack.cs" />
+    <Compile Include="IStack.cs" />
+    <Compile Include="StackBasedOnArray.cs" />
+    <Compile Include="StackBasedOnLinks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TwoWayNode.cs" />
