@@ -43,8 +43,10 @@
   <ItemGroup>
     <Compile Include="BinaryTree.cs" />
     <Compile Include="BinaryTreeNode.cs" />
+    <Compile Include="MyStack.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwoWayNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

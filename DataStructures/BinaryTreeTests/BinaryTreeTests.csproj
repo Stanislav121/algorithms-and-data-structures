@@ -58,6 +58,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BinaryTreeBaseTests.cs" />
+    <Compile Include="MyStackTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
