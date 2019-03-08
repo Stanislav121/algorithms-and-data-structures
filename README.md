@@ -1,2 +1,2 @@
 # algorithms-and-data-structures
-First local commit
+This project is about algorithms and data structures
