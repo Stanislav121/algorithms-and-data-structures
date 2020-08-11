@@ -23,7 +23,7 @@ namespace DataStructures
 
             Console.WriteLine(tree.Count());
             Console.ReadLine();
-            //First first commit on new machine
+            //Second first commit on new machine
         }
     }
 }
